@@ -10,6 +10,21 @@ import plotly.graph_objects as go
 from typing import Dict, Any, Optional
 import io
 from pathlib import Path
+import sys
+import os
+
+# Handle NLTK data download for Streamlit Cloud
+try:
+    import nltk
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    try:
+        nltk.download('punkt', quiet=True)
+        nltk.download('stopwords', quiet=True)
+    except Exception as e:
+        st.warning(f"NLTK data download failed: {e}. Some features may be limited.")
+except ImportError:
+    pass  # NLTK not available, continue without it
 
 # Page configuration
 st.set_page_config(
