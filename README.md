@@ -1,363 +1,299 @@
-# 🤖 Multi-Agent AI System for Data & Research Intelligence
+# 🤖 Multi-Agent AI System
 
-A sophisticated multi-agent AI system that seamlessly handles both structured data analysis and unstructured research document processing through intelligent query routing and specialized agents.
+> **Intelligent Data Analysis & Research Assistant Platform**
+
+A sophisticated multi-agent AI system that seamlessly processes both structured business data and unstructured research documents through natural language queries and intelligent agent orchestration.
+
+[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-green.svg)](https://fastapi.tiangolo.com)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-red.svg)](https://streamlit.io)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](https://docker.com)
 
 ## 🎯 Overview
 
-This system consists of three specialized AI agents:
+This system addresses the common business challenge of analyzing both structured data (CSV/Excel files) and unstructured research documents (PDFs) through a single, intuitive interface. Instead of switching between different tools, users can ask natural language questions and get intelligent responses with automatic visualizations and insights.
 
-- **📊 Data Intelligence Agent**: Processes CSV/Excel files, answers business queries, and generates automatic visualizations
-- **📄 Research Assistant Agent**: Handles PDF documents, provides summaries, keyword extraction, and Q&A capabilities
-- **🤖 Orchestrator Agent**: Intelligently routes user queries to the appropriate agent based on context and intent
+### Key Features
 
-## ✨ Key Features
+- **🧠 Intelligent Query Routing**: Automatically determines whether your question is about data or research
+- **📊 Data Intelligence**: Analyzes business data with natural language queries and auto-generated charts
+- **📄 Research Assistant**: Processes research papers with summarization, keyword extraction, and Q&A
+- **💬 Unified Chat Interface**: Single interface for all types of queries
+- **📈 Interactive Visualizations**: Real-time charts and graphs based on your questions
+- **🚀 Multiple Deployment Options**: Local, Docker, and cloud deployment ready
 
-### Data Intelligence Agent
-- 📈 **Natural Language Queries**: Ask questions like "What was the total sales in Q2?"
-- 📊 **Automatic Visualizations**: Generate charts and graphs with simple requests
-- 🔍 **Advanced Analytics**: Aggregations, trends, rankings, and filtering
-- 📋 **Multiple File Formats**: Support for CSV and Excel files
-- 💡 **Smart Insights**: Automatic data profiling and recommendations
+## 🏗️ System Architecture
 
-### Research Assistant Agent
-- 📖 **Document Summarization**: Generate concise abstracts from research papers
-- 🏷️ **Keyword Extraction**: Identify key terms and concepts
-- ❓ **Intelligent Q&A**: Answer questions about document content
-- 🔎 **Semantic Search**: Find relevant information across multiple documents
-- 📚 **Multi-document Support**: Handle multiple research papers simultaneously
+The system follows a **multi-agent architecture pattern** with three specialized AI agents coordinated by an intelligent orchestrator:
 
-### Orchestrator Agent
-- 🧠 **Smart Routing**: Automatically determines which agent should handle each query
-- 🎯 **Context Awareness**: Considers loaded files and query history
-- 💭 **Disambiguation**: Helps clarify ambiguous queries
-- 📊 **System Monitoring**: Provides status and usage insights
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    USER INTERFACE (Streamlit)                   │
+│                     Natural Language Queries                    │
+└─────────────────────┬───────────────────────────────────────────┘
+                      │
+┌─────────────────────▼───────────────────────────────────────────┐
+│                  ORCHESTRATOR AGENT                            │
+│              • Query Classification                             │
+│              • Intent Recognition                               │
+│              • Agent Routing                                    │
+│              • Context Management                               │
+└─────────────┬─────────────────────────────────┬─────────────────┘
+              │                                 │
+┌─────────────▼─────────────┐     ┌─────────────▼─────────────────┐
+│   DATA INTELLIGENCE       │     │   RESEARCH ASSISTANT          │
+│        AGENT               │     │         AGENT                 │
+│                           │     │                               │
+│ • CSV/Excel Processing    │     │ • PDF Text Extraction         │
+│ • Pandas Integration      │     │ • Document Chunking           │
+│ • SQL Query Generation    │     │ • Semantic Embeddings         │
+│ • Chart Generation        │     │ • Vector Search (FAISS)       │
+│ • Statistical Analysis    │     │ • Summarization               │
+│                           │     │ • Keyword Extraction          │
+└───────────────────────────┘     └───────────────────────────────┘
+              │                                 │
+┌─────────────▼─────────────────────────────────▼─────────────────┐
+│                    BACKEND API (FastAPI)                        │
+│               RESTful endpoints with OpenAPI docs               │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Architecture Components
+
+**🎯 Orchestrator Agent**
+- **Purpose**: Central coordinator that analyzes user queries and routes them to appropriate specialists
+- **Technology**: Custom classification algorithm with keyword analysis and context awareness
+- **Intelligence**: Handles query disambiguation and maintains conversation context
+
+**📊 Data Intelligence Agent**
+- **Purpose**: Specializes in structured data analysis and business intelligence
+- **Technology**: Pandas for data processing, Plotly for visualizations, SQLite for storage
+- **Capabilities**: Aggregations, trend analysis, statistical computations, automatic chart generation
+
+**📄 Research Assistant Agent**
+- **Purpose**: Handles unstructured document analysis and research tasks
+- **Technology**: PyMuPDF for PDF processing, Sentence Transformers for embeddings, FAISS for vector search
+- **Capabilities**: Document summarization, semantic search, keyword extraction, Q&A
+
+**🌐 Unified Interface**
+- **Frontend**: Streamlit-based web application with chat interface
+- **Backend**: FastAPI REST API with automatic OpenAPI documentation
+- **Communication**: RESTful API endpoints with JSON data exchange
 
 ## 🚀 Quick Start
 
-### Option 1: Docker Deployment (Recommended)
+### Option 1: Local Development
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/your-username/multi-agent-ai-system.git
    cd multi-agent-ai-system
    ```
-
-2. **Build and run with Docker Compose**
-   ```bash
-   docker-compose up --build
-   ```
-
-3. **Access the application**
-   - Frontend (Streamlit): http://localhost:8501
-   - Backend API: http://localhost:8000
-   - API Documentation: http://localhost:8000/docs
-
-### Option 2: Local Development
-
-1. **Prerequisites**
-   - Python 3.9+
-   - pip package manager
 
 2. **Install dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Run the backend**
+3. **Run the system**
    ```bash
-   cd backend
-   uvicorn main:app --reload --host 0.0.0.0 --port 8000
+   python run.py
    ```
 
-4. **Run the frontend (in a new terminal)**
+4. **Access the application**
+   - Frontend: http://localhost:8501
+   - API Documentation: http://localhost:8000/docs
+
+### Option 2: Docker Deployment
+
+1. **Build and run with Docker Compose**
    ```bash
-   cd frontend
-   streamlit run app.py --server.port 8501
+   docker-compose up --build
    ```
 
-5. **Access the application**
+2. **Access the services**
    - Frontend: http://localhost:8501
    - Backend API: http://localhost:8000
 
-## 📖 Usage Guide
+### Option 3: Streamlit Cloud
 
-### 1. Upload Files
+1. **Deploy to Streamlit Cloud**
+   - Fork this repository
+   - Go to [share.streamlit.io](https://share.streamlit.io)
+   - Deploy using `streamlit_app.py`
 
-**Data Files (CSV/Excel):**
-- Use the sidebar to upload CSV or Excel files
+## 📖 How to Use
+
+### 1. Upload Your Data
+
+**For Data Analysis:**
+- Upload CSV or Excel files containing your business data
 - Supported formats: `.csv`, `.xlsx`, `.xls`
-- Files are automatically processed and profiled
+- Examples: sales data, customer information, financial records
 
-**Research Documents (PDF):**
+**For Research Analysis:**
 - Upload PDF research papers or documents
-- Text is extracted and processed for semantic search
-- Embeddings are generated for intelligent Q&A
+- The system will automatically extract and process the text
+- Creates searchable embeddings for intelligent Q&A
 
-### 2. Ask Questions
+### 2. Ask Natural Language Questions
 
-The system supports natural language queries. Here are some examples:
-
-**Data Analysis Queries:**
+**Data Analysis Examples:**
 ```
-"What was the total revenue in Q1?"
-"Show me the top 5 products by sales"
-"Plot revenue trends over time"
-"Which region has the highest performance?"
-"Create a bar chart of sales by category"
+"What was the total revenue in Q2?"
+"Show me the top 5 customers by sales"
+"Plot monthly revenue trends"
+"Which product category performs best?"
+"Create a bar chart of sales by region"
 ```
 
-**Research Queries:**
+**Research Analysis Examples:**
 ```
-"Summarize the uploaded research paper"
+"Summarize this research paper"
 "What methodology was used in the study?"
-"Extract key findings from the document"
+"Extract the key findings"
 "What are the main challenges discussed?"
-"Find papers about machine learning"
+"Find information about machine learning approaches"
 ```
 
-**System Queries:**
-```
-"What files are currently loaded?"
-"Show me system status"
-"Help me understand what you can do"
-```
+### 3. Get Intelligent Responses
 
-### 3. Interpret Results
+The system automatically:
+- **Routes** your query to the appropriate agent
+- **Processes** the request using specialized algorithms
+- **Generates** visualizations, summaries, or answers
+- **Presents** results in an easy-to-understand format
 
-The system provides rich, interactive responses:
-- **📊 Visualizations**: Interactive Plotly charts
-- **📋 Tables**: Formatted data tables
-- **💡 Insights**: Key findings and summaries
-- **🏷️ Metadata**: Query analysis and routing information
+## 📊 Sample Data
 
-## 🏗️ Architecture
+The repository includes sample datasets for testing:
 
-### System Architecture
-```
-┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Streamlit     │    │    FastAPI       │    │   AI Agents     │
-│   Frontend      │◄──►│    Backend       │◄──►│   Orchestrator  │
-│                 │    │                  │    │                 │
-└─────────────────┘    └──────────────────┘    └─────────────────┘
-                                                         │
-                                        ┌────────────────┼────────────────┐
-                                        │                │                │
-                                        ▼                ▼                ▼
-                                ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
-                                │     Data     │ │   Research   │ │  Additional  │
-                                │ Intelligence │ │  Assistant   │ │   Agents     │
-                                │    Agent     │ │    Agent     │ │   (Future)   │
-                                └──────────────┘ └──────────────┘ └──────────────┘
-```
+- **`sales_data.csv`**: 40 sales transactions with product, revenue, and regional data
+- **`customer_data.csv`**: 30 customer profiles with demographics and purchasing behavior
+- **`sample_research_paper.txt`**: Research paper on computer vision and deep learning
 
-### Technology Stack
+## 🛠️ Technology Stack
 
-**Backend:**
+### Backend
 - **FastAPI**: Modern, fast web framework for building APIs
 - **Python 3.9+**: Core programming language
 - **Pandas**: Data manipulation and analysis
-- **Plotly**: Interactive visualizations
-- **PyMuPDF**: PDF text extraction
-- **Sentence Transformers**: Text embeddings
-- **FAISS**: Vector similarity search
-- **NLTK**: Natural language processing
+- **SQLite**: Lightweight database for data storage
+- **Uvicorn**: ASGI server for FastAPI
 
-**Frontend:**
+### AI & Machine Learning
+- **Sentence Transformers**: Text embeddings for semantic search
+- **FAISS**: Vector similarity search for document retrieval
+- **NLTK**: Natural language processing toolkit
+- **PyMuPDF**: PDF text extraction and processing
+
+### Visualization
+- **Plotly**: Interactive charts and graphs
+- **Matplotlib**: Statistical plotting library
+- **Seaborn**: Statistical data visualization
+
+### Frontend
 - **Streamlit**: Interactive web application framework
-- **Plotly**: Chart rendering
-- **Requests**: API communication
+- **HTML/CSS**: Custom styling and responsive design
 
-**Deployment:**
-- **Docker**: Containerization
+### Deployment
+- **Docker**: Containerization for consistent deployment
 - **Docker Compose**: Multi-container orchestration
-- **Uvicorn**: ASGI server
+
+## 📁 Project Structure
+
+```
+multi-agent-ai-system/
+├── backend/                 # FastAPI backend application
+│   ├── agents/             # AI agent implementations
+│   │   ├── data_intelligence_agent.py
+│   │   ├── research_assistant_agent.py
+│   │   └── orchestrator_agent.py
+│   └── main.py            # FastAPI application entry point
+│
+├── frontend/              # Streamlit frontend application
+│   ├── app.py            # Full-featured app (with backend)
+│   └── app_standalone.py # Standalone app (for cloud deployment)
+│
+├── docker/               # Docker configuration
+│   ├── Dockerfile.backend
+│   └── Dockerfile.frontend
+│
+├── sample_data/         # Sample datasets for testing
+│   ├── sales_data.csv
+│   ├── customer_data.csv
+│   └── sample_research_paper.txt
+│
+├── .streamlit/          # Streamlit configuration
+│   └── config.toml
+│
+├── requirements.txt     # Python dependencies
+├── streamlit_requirements.txt  # Streamlit Cloud dependencies
+├── docker-compose.yml   # Container orchestration
+├── streamlit_app.py    # Cloud deployment entry point
+└── run.py              # Local development launcher
+```
+
+## 🎥 Demo Video Guide
+
+Create a compelling 2-3 minute demonstration:
+
+### Structure (2-3 minutes total)
+
+**1. Introduction (20 seconds)**
+- Show the main interface
+- Explain the multi-agent concept briefly
+
+**2. Data Analysis Demo (60 seconds)**
+- Upload the sample sales data
+- Ask: "What was the total revenue in Q1?"
+- Ask: "Plot monthly sales trends"
+- Show the automatic chart generation
+
+**3. Research Analysis Demo (60 seconds)**
+- Upload a research document
+- Ask: "Summarize this research paper"
+- Ask: "What methodology was used?"
+- Show the intelligent responses
+
+**4. Smart Orchestration (40 seconds)**
+- Ask mixed queries to show intelligent routing
+- Demonstrate the system's ability to handle different types of questions
+- Show the agent badges indicating which specialist handled each query
 
 ## 🔧 Configuration
 
-### Environment Variables
+### Environment Variables (Optional)
 
-Create a `.env` file in the root directory:
+Create a `.env` file for custom configuration:
 
 ```env
 # API Configuration
 API_HOST=0.0.0.0
 API_PORT=8000
-
-# Frontend Configuration
 STREAMLIT_PORT=8501
 
-# AI Configuration
-EMBEDDING_MODEL=all-MiniLM-L6-v2
-MAX_CHUNK_SIZE=500
-CHUNK_OVERLAP=50
-
-# Logging
+# Development
+DEBUG=False
 LOG_LEVEL=INFO
 ```
 
-### Advanced Configuration
+### Customization
 
-**Data Agent Settings:**
-```python
-# In backend/agents/data_intelligence_agent.py
-DEFAULT_CHART_TYPE = "bar"
-MAX_VISUALIZATION_POINTS = 1000
-DEFAULT_TOP_N = 10
-```
-
-**Research Agent Settings:**
-```python
-# In backend/agents/research_assistant_agent.py
-EMBEDDING_MODEL = "all-MiniLM-L6-v2"
-MAX_CHUNK_SIZE = 500
-SIMILARITY_THRESHOLD = 0.3
-```
-
-## 📊 API Documentation
-
-### Core Endpoints
-
-**File Upload:**
-- `POST /upload/data` - Upload CSV/Excel files
-- `POST /upload/pdf` - Upload PDF documents
-
-**Query Processing:**
-- `POST /query` - Process natural language queries
-
-**System Management:**
-- `GET /status` - Get system status
-- `GET /files` - List loaded files
-- `DELETE /files/clear` - Clear all data
-
-**Data-Specific:**
-- `GET /data/datasets` - List datasets
-- `GET /data/summary/{name}` - Get dataset summary
-
-**Research-Specific:**
-- `GET /research/documents` - List documents
-- `POST /research/search` - Search documents
-
-### Example API Usage
-
-```python
-import requests
-
-# Upload a data file
-with open('sales_data.csv', 'rb') as f:
-    response = requests.post(
-        'http://localhost:8000/upload/data',
-        files={'file': f}
-    )
-
-# Process a query
-response = requests.post(
-    'http://localhost:8000/query',
-    json={
-        'query': 'What was the total sales in Q1?',
-        'context': {}
-    }
-)
-```
-
-## 🧪 Testing
-
-### Sample Data
-
-The `sample_data/` directory contains:
-- `sales_data.csv`: Sample sales transactions
-- `customer_data.csv`: Customer demographics
-- `sample_research_paper.txt`: Research paper content
-
-### Test Scenarios
-
-1. **Data Analysis Test:**
-   ```
-   Upload: sales_data.csv
-   Query: "Show me monthly revenue trends"
-   Expected: Line chart with revenue over time
-   ```
-
-2. **Research Test:**
-   ```
-   Upload: research paper PDF
-   Query: "Summarize the methodology section"
-   Expected: Concise methodology summary
-   ```
-
-3. **Orchestrator Test:**
-   ```
-   Upload: Both data and research files
-   Query: "What are the key findings?" (ambiguous)
-   Expected: Disambiguation request
-   ```
-
-### Running Tests
-
-```bash
-# Install test dependencies
-pip install pytest pytest-asyncio
-
-# Run tests
-python -m pytest tests/ -v
-```
-
-## 🚀 Deployment
-
-### Production Deployment
-
-1. **Environment Setup:**
-   ```bash
-   # Set production environment variables
-   export NODE_ENV=production
-   export API_HOST=0.0.0.0
-   export API_PORT=8000
-   ```
-
-2. **Docker Production Build:**
-   ```bash
-   docker-compose -f docker-compose.prod.yml up --build -d
-   ```
-
-3. **Health Checks:**
-   ```bash
-   # Check backend health
-   curl http://localhost:8000/health
-   
-   # Check frontend health
-   curl http://localhost:8501/_stcore/health
-   ```
-
-### Scaling Considerations
-
-- **Load Balancing**: Use nginx or similar for load balancing multiple backend instances
-- **Database**: Consider PostgreSQL for persistent data storage
-- **Caching**: Implement Redis for query result caching
-- **Monitoring**: Use Prometheus and Grafana for system monitoring
+- **Agent Behavior**: Modify agent parameters in respective Python files
+- **UI Styling**: Update CSS in the Streamlit app files
+- **Data Processing**: Extend the data intelligence agent for custom analysis
+- **Document Processing**: Enhance the research assistant for specific document types
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions! Here's how to get started:
 
-### Development Setup
-
-1. **Fork the repository**
-2. **Create a feature branch:**
-   ```bash
-   git checkout -b feature/amazing-feature
-   ```
-3. **Make your changes**
-4. **Run tests:**
-   ```bash
-   python -m pytest tests/
-   ```
-5. **Submit a pull request**
-
-### Code Style
-
-- Follow PEP 8 for Python code
-- Use type hints where appropriate
-- Add docstrings to all functions and classes
-- Write comprehensive tests for new features
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## 📝 License
 
@@ -365,35 +301,22 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- **LangChain**: For multi-agent framework inspiration
-- **Streamlit**: For the excellent web app framework
-- **FastAPI**: For the modern API framework
-- **Sentence Transformers**: For text embeddings
-- **Plotly**: For interactive visualizations
+- **FastAPI**: For the excellent modern web framework
+- **Streamlit**: For making web app development incredibly simple
+- **Sentence Transformers**: For powerful text embeddings
+- **Plotly**: For beautiful interactive visualizations
+- **The Open Source Community**: For the amazing tools and libraries
 
 ## 📞 Support
 
-For support, please:
-1. Check the [FAQ](docs/FAQ.md)
-2. Search existing [issues](https://github.com/your-repo/issues)
-3. Create a new issue with detailed information
+If you encounter any issues or have questions:
 
-## 🗺️ Roadmap
-
-### Version 2.0 (Planned)
-- [ ] **Advanced NLP**: Integration with GPT-4 for better query understanding
-- [ ] **Real-time Data**: Support for streaming data sources
-- [ ] **Advanced Visualizations**: 3D charts and interactive dashboards
-- [ ] **Multi-language Support**: Support for multiple languages
-- [ ] **Cloud Integration**: AWS/Azure/GCP deployment options
-
-### Version 2.1 (Future)
-- [ ] **Voice Interface**: Voice-to-text query input
-- [ ] **Mobile App**: React Native mobile application
-- [ ] **Advanced Security**: OAuth2 and role-based access control
-- [ ] **Plugin System**: Extensible plugin architecture
-- [ ] **Custom Models**: Fine-tuned models for specific domains
+1. Check the existing [Issues](https://github.com/your-username/multi-agent-ai-system/issues)
+2. Create a new issue with detailed information
+3. Include steps to reproduce any problems
 
 ---
 
 **Built with ❤️ for intelligent data analysis and research assistance**
+
+> Transform your data analysis workflow with the power of AI agents working together seamlessly.
