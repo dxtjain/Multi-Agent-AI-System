@@ -234,32 +234,6 @@ multi-agent-ai-system/
 └── run.py              # Local development launcher
 ```
 
-## 🎥 Demo Video Guide
-
-Create a compelling 2-3 minute demonstration:
-
-### Structure (2-3 minutes total)
-
-**1. Introduction (20 seconds)**
-- Show the main interface
-- Explain the multi-agent concept briefly
-
-**2. Data Analysis Demo (60 seconds)**
-- Upload the sample sales data
-- Ask: "What was the total revenue in Q1?"
-- Ask: "Plot monthly sales trends"
-- Show the automatic chart generation
-
-**3. Research Analysis Demo (60 seconds)**
-- Upload a research document
-- Ask: "Summarize this research paper"
-- Ask: "What methodology was used?"
-- Show the intelligent responses
-
-**4. Smart Orchestration (40 seconds)**
-- Ask mixed queries to show intelligent routing
-- Demonstrate the system's ability to handle different types of questions
-- Show the agent badges indicating which specialist handled each query
 
 ## 🔧 Configuration
 
