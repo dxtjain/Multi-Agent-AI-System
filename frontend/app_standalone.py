@@ -34,6 +34,14 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Initialize session state EARLY - before any other operations
+if 'chat_history' not in st.session_state:
+    st.session_state.chat_history = []
+if 'uploaded_files' not in st.session_state:
+    st.session_state.uploaded_files = {'data': [], 'pdf': []}
+if 'demo_data' not in st.session_state:
+    st.session_state.demo_data = None
+
 # Custom CSS
 st.markdown("""
 <style>
@@ -190,14 +198,6 @@ def get_agent_badge(agent_name: str) -> str:
         return '<span class="agent-badge orchestrator-agent">🤖 Orchestrator Agent</span>'
 
 def main():
-    # Initialize session state first
-    if 'chat_history' not in st.session_state:
-        st.session_state.chat_history = []
-    if 'uploaded_files' not in st.session_state:
-        st.session_state.uploaded_files = {'data': [], 'pdf': []}
-    if 'demo_data' not in st.session_state:
-        st.session_state.demo_data = None
-    
     # Header
     st.markdown('<h1 class="main-header">🤖 Multi-Agent AI System</h1>', unsafe_allow_html=True)
     st.markdown("**Intelligent Data Analysis & Research Assistant** - *Demo Version*")
@@ -266,17 +266,33 @@ def main():
         
         col1, col2 = st.columns(2)
         with col1:
-            st.metric("Data Files", len(st.session_state.uploaded_files['data']))
+            try:
+                data_count = len(st.session_state.uploaded_files.get('data', []))
+                st.metric("Data Files", data_count)
+            except (AttributeError, KeyError):
+                st.metric("Data Files", 0)
         with col2:
-            st.metric("Documents", len(st.session_state.uploaded_files['pdf']))
+            try:
+                doc_count = len(st.session_state.uploaded_files.get('pdf', []))
+                st.metric("Documents", doc_count)
+            except (AttributeError, KeyError):
+                st.metric("Documents", 0)
         
         # Clear data
         if st.button("🗑️ Clear All Data"):
-            st.session_state.demo_data = None
-            st.session_state.uploaded_files = {'data': [], 'pdf': []}
-            st.session_state.chat_history = []
-            st.success("✅ All data cleared")
-            st.rerun()
+            try:
+                st.session_state.demo_data = None
+                st.session_state.uploaded_files = {'data': [], 'pdf': []}
+                st.session_state.chat_history = []
+                st.success("✅ All data cleared")
+                st.rerun()
+            except Exception as e:
+                st.error(f"Error clearing data: {str(e)}")
+                # Reset session state manually
+                for key in ['demo_data', 'uploaded_files', 'chat_history']:
+                    if key in st.session_state:
+                        del st.session_state[key]
+                st.rerun()
     
     # Main chat interface
     st.header("💬 Chat Interface")
@@ -334,13 +350,15 @@ def main():
     # Display chat history
     chat_container = st.container()
     with chat_container:
-        for i, message in enumerate(st.session_state.chat_history):
-            if message['type'] == 'user':
-                st.markdown(f'<div style="background-color: #e3f2fd; padding: 1rem; border-radius: 0.5rem; margin: 0.5rem 0; border-left: 4px solid #2196f3;">👤 <strong>You:</strong> {message["content"]}</div>', 
-                           unsafe_allow_html=True)
-            else:
-                st.markdown(f'<div style="background-color: #f3e5f5; padding: 1rem; border-radius: 0.5rem; margin: 0.5rem 0; border-left: 4px solid #9c27b0;">🤖 <strong>Assistant:</strong></div>', 
-                           unsafe_allow_html=True)
+        try:
+            chat_history = st.session_state.get('chat_history', [])
+            for i, message in enumerate(chat_history):
+                if message['type'] == 'user':
+                    st.markdown(f'<div style="background-color: #e3f2fd; padding: 1rem; border-radius: 0.5rem; margin: 0.5rem 0; border-left: 4px solid #2196f3;">👤 <strong>You:</strong> {message["content"]}</div>', 
+                               unsafe_allow_html=True)
+                else:
+                    st.markdown(f'<div style="background-color: #f3e5f5; padding: 1rem; border-radius: 0.5rem; margin: 0.5rem 0; border-left: 4px solid #9c27b0;">🤖 <strong>Assistant:</strong></div>', 
+                               unsafe_allow_html=True)
                 
                 result = message['content']
                 
@@ -363,6 +381,10 @@ def main():
                 # Show data
                 if 'data' in result and not result.get('suggestion'):
                     st.json(result['data'])
+        except Exception as e:
+            st.error(f"Error displaying chat history: {str(e)}")
+            # Reset chat history on error
+            st.session_state.chat_history = []
     
     # Query input
     st.subheader("Ask a Question")
@@ -388,11 +410,14 @@ def main():
     
     # Handle query submission
     if submit_button and user_query.strip():
-        # Add user message to chat
-        st.session_state.chat_history.append({
-            'type': 'user',
-            'content': user_query
-        })
+        try:
+            # Add user message to chat
+            if 'chat_history' not in st.session_state:
+                st.session_state.chat_history = []
+            st.session_state.chat_history.append({
+                'type': 'user',
+                'content': user_query
+            })
         
         # Determine query type and simulate response
         query_lower = user_query.lower()
@@ -419,14 +444,27 @@ def main():
                 'suggestion': True
             }
         
-        # Add assistant response to chat
-        st.session_state.chat_history.append({
-            'type': 'assistant',
-            'content': result
-        })
-        
-        # Rerun to update the chat display
-        st.rerun()
+            # Add assistant response to chat
+            st.session_state.chat_history.append({
+                'type': 'assistant',
+                'content': result
+            })
+            
+            # Rerun to update the chat display
+            st.rerun()
+        except Exception as e:
+            st.error(f"Error processing query: {str(e)}")
+            # Still try to add error message to chat
+            try:
+                if 'chat_history' not in st.session_state:
+                    st.session_state.chat_history = []
+                st.session_state.chat_history.append({
+                    'type': 'assistant',
+                    'content': {'agent': 'System', 'response': f'Sorry, there was an error processing your query: {str(e)}', 'suggestion': True}
+                })
+                st.rerun()
+            except:
+                pass  # If even this fails, just show the error
     
     # Footer with system info
     st.markdown("---")
