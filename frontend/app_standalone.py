@@ -418,31 +418,31 @@ def main():
                 'type': 'user',
                 'content': user_query
             })
-        
-        # Determine query type and simulate response
-        query_lower = user_query.lower()
-        
-        # Route to appropriate agent
-        if any(word in query_lower for word in ['revenue', 'sales', 'total', 'plot', 'chart', 'product', 'data']):
-            # Data Intelligence Agent
-            if st.session_state.demo_data is not None:
-                result = simulate_data_query(user_query, st.session_state.demo_data)
+            
+            # Determine query type and simulate response
+            query_lower = user_query.lower()
+            
+            # Route to appropriate agent
+            if any(word in query_lower for word in ['revenue', 'sales', 'total', 'plot', 'chart', 'product', 'data']):
+                # Data Intelligence Agent
+                if st.session_state.demo_data is not None:
+                    result = simulate_data_query(user_query, st.session_state.demo_data)
+                else:
+                    result = {
+                        'agent': 'Data Intelligence Agent',
+                        'response': 'Please load sample data or upload a CSV/Excel file first!',
+                        'suggestion': True
+                    }
+            elif any(word in query_lower for word in ['research', 'paper', 'summarize', 'keyword', 'methodology', 'document']):
+                # Research Assistant Agent
+                result = simulate_research_query(user_query)
             else:
+                # Orchestrator Agent
                 result = {
-                    'agent': 'Data Intelligence Agent',
-                    'response': 'Please load sample data or upload a CSV/Excel file first!',
+                    'agent': 'Orchestrator Agent',
+                    'response': 'I can help you with data analysis or research document queries. Please specify what you\'d like to analyze!',
                     'suggestion': True
                 }
-        elif any(word in query_lower for word in ['research', 'paper', 'summarize', 'keyword', 'methodology', 'document']):
-            # Research Assistant Agent
-            result = simulate_research_query(user_query)
-        else:
-            # Orchestrator Agent
-            result = {
-                'agent': 'Orchestrator Agent',
-                'response': 'I can help you with data analysis or research document queries. Please specify what you\'d like to analyze!',
-                'suggestion': True
-            }
         
             # Add assistant response to chat
             st.session_state.chat_history.append({
