@@ -12,8 +12,8 @@ current_dir = Path(__file__).parent
 frontend_dir = current_dir / "frontend"
 sys.path.insert(0, str(frontend_dir))
 
-# Import and run the standalone app for cloud deployment
-from app_standalone import main
+# Import and run the clean, production-ready app for cloud deployment
+from app_clean import main
 
 if __name__ == "__main__":
     main()
