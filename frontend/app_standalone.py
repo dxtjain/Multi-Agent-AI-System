@@ -72,13 +72,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Initialize session state
-if 'chat_history' not in st.session_state:
-    st.session_state.chat_history = []
-if 'uploaded_files' not in st.session_state:
-    st.session_state.uploaded_files = {'data': [], 'pdf': []}
-if 'demo_data' not in st.session_state:
-    st.session_state.demo_data = None
 
 def load_sample_data():
     """Load sample data for demonstration"""
@@ -197,6 +190,14 @@ def get_agent_badge(agent_name: str) -> str:
         return '<span class="agent-badge orchestrator-agent">🤖 Orchestrator Agent</span>'
 
 def main():
+    # Initialize session state first
+    if 'chat_history' not in st.session_state:
+        st.session_state.chat_history = []
+    if 'uploaded_files' not in st.session_state:
+        st.session_state.uploaded_files = {'data': [], 'pdf': []}
+    if 'demo_data' not in st.session_state:
+        st.session_state.demo_data = None
+    
     # Header
     st.markdown('<h1 class="main-header">🤖 Multi-Agent AI System</h1>', unsafe_allow_html=True)
     st.markdown("**Intelligent Data Analysis & Research Assistant** - *Demo Version*")
